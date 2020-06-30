@@ -3,7 +3,7 @@ package com.robertreynisson.accountmanager.http;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.robertreynisson.accountmanager.controllers.AccountController;
 import com.robertreynisson.accountmanager.controllers.domain.Role;
-import com.robertreynisson.accountmanager.controllers.domain.UserCreate;
+import com.robertreynisson.accountmanager.controllers.domain.UserAccountAccountCreate;
 import com.robertreynisson.accountmanager.service.AccountService;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class ControllerCRUDTests {
 
 
     MockMvc mvc;
-    UserCreate userCreate;
+    UserAccountAccountCreate userAccountCreate;
 
     @Autowired
     private WebApplicationContext context;
@@ -51,14 +51,14 @@ public class ControllerCRUDTests {
                 .apply(springSecurity())
                 .build();
 
-        userCreate = new UserCreate();
-        userCreate.setUserName("RobertReynisson");
-        userCreate.setFirstName("Robert");
-        userCreate.setLastName("Reynisson");
-        userCreate.setEmail("robert@robert.com");
-        userCreate.setPhone("+234234234234");
-        userCreate.setRole(Role.ADMIN);
-        userCreate.setPassword("Testing12345");
+        userAccountCreate = new UserAccountAccountCreate();
+        userAccountCreate.setUserName("RobertReynisson");
+        userAccountCreate.setFirstName("Robert");
+        userAccountCreate.setLastName("Reynisson");
+        userAccountCreate.setEmail("robert@robert.com");
+        userAccountCreate.setPhone("+234234234234");
+        userAccountCreate.setRole(Role.ADMIN);
+        userAccountCreate.setPassword("Testing12345");
 
     }
 
@@ -66,7 +66,7 @@ public class ControllerCRUDTests {
     @WithMockUser(username = "test", roles = {"ADMIN"})
     public void createUser() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writer().writeValueAsString(userCreate);
+        String json = objectMapper.writer().writeValueAsString(userAccountCreate);
 
         // Create
         mvc.perform(MockMvcRequestBuilders.post("/account/")

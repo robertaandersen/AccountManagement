@@ -1,0 +1,2 @@
+-- Initialize with test data when spring.jpa.hibernate.ddl-auto is set to create
+INSERT INTO USERS ( ID, USERNAME, PASSWORD, EMAIL, ROLE) VALUES (1, 'admin', '$2a$04$ViAR75nUpJrpYhdoGyH5fel.MQ8wcGUZNkfVuy96hOLATfNRnbAD2', 'admin@admin.com', 'ADMIN');

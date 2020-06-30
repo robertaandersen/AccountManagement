@@ -4,7 +4,7 @@ package com.robertreynisson.accountmanager.controllers.domain;
  * Make sure password is never passed down
  * in a readable format
  **/
-public class UserCreate extends User {
+public class UserAccountAccountCreate extends UserAccount {
 
     private String password;
 

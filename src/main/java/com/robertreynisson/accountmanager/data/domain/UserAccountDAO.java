@@ -1,21 +1,21 @@
 package com.robertreynisson.accountmanager.data.domain;
 
-import com.robertreynisson.accountmanager.controllers.domain.UserCreate;
+import com.robertreynisson.accountmanager.controllers.domain.UserAccountAccountCreate;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Users")
-public class UserDAO {
+public class UserAccountDAO {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = "user_account_id", strategy = "increment")
+    @GeneratedValue(generator = "user_account_id")
     private Long id;
     private String firstName;
     private String lastName;
+    @Column(name = "USERNAME", unique = true)
     private String userName;
     private String password;
     private String email;
@@ -23,17 +23,17 @@ public class UserDAO {
     private String role;
 
 
-    public UserDAO() {
+    public UserAccountDAO() {
     }
 
-    public UserDAO(UserCreate userCreate) {
-        this.firstName = userCreate.getFirstName();
-        this.lastName = userCreate.getLastName();
-        this.userName = userCreate.getUserName();
-        this.email = userCreate.getEmail();
-        this.password = userCreate.getPassword();
-        this.phone = userCreate.getPhone();
-        this.role = String.valueOf(userCreate.getRole());
+    public UserAccountDAO(UserAccountAccountCreate userAccountCreate) {
+        this.firstName = userAccountCreate.getFirstName();
+        this.lastName = userAccountCreate.getLastName();
+        this.userName = userAccountCreate.getUserName();
+        this.email = userAccountCreate.getEmail();
+        this.password = userAccountCreate.getPassword();
+        this.phone = userAccountCreate.getPhone();
+        this.role = String.valueOf(userAccountCreate.getRole());
     }
 
     public Long getId() {

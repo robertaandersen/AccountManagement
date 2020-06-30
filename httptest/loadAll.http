@@ -9,10 +9,15 @@ Authorization: Basic {{username}} {{password}}
 Content-Type: application/json
 
 {
-  "username": "robertreynisson",
+  "password": "robert123",
+  "userName": "robertreynisson",
   "firstname": "robert",
   "lastname": "reynisson",
   "role": "ADMIN"
 }
+
+> {%
+    client.log(response.body)
+%}
 
 ###

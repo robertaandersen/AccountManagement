@@ -1,8 +1,9 @@
 package com.robertreynisson.accountmanager.controllers;
 
-import com.robertreynisson.accountmanager.controllers.domain.User;
-import com.robertreynisson.accountmanager.controllers.domain.UserCreate;
+import com.robertreynisson.accountmanager.controllers.domain.UserAccount;
+import com.robertreynisson.accountmanager.controllers.domain.UserAccountAccountCreate;
 import com.robertreynisson.accountmanager.service.AccountService;
+import com.robertreynisson.accountmanager.service.domain.UserAccountException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,29 +21,29 @@ public class AccountController {
     }
 
     @GetMapping("/")
-    public List<User> GetAll() {
+    public List<UserAccount> GetAll() throws UserAccountException.APIError {
         return accountService.loadAllUsers();
     }
 
     @GetMapping("/{id}")
-    public String GetById(@PathVariable(value = "id") Long id) {
-        return "test " + id;
+    public UserAccount GetById(@PathVariable(value = "id") Long id) throws UserAccountException.APIError {
+        return accountService.loadUserById(id);
     }
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public User Post(@RequestBody UserCreate userCreate) {
-        return accountService.createAccount(userCreate);
+    public UserAccount Post(@RequestBody UserAccountAccountCreate userAccountCreate) throws UserAccountException.APIError {
+        return accountService.createAccount(userAccountCreate);
     }
 
     @PutMapping("/")
-    public String Put() {
-        return "post test";
+    public UserAccount Put(@RequestBody UserAccountAccountCreate userAccountAccountCreate) throws UserAccountException.APIError {
+        return accountService.updateUser(userAccountAccountCreate);
     }
 
     @DeleteMapping("/{id}")
-    public String Delete(@PathVariable(value = "id") Long id) {
-        return "post test";
+    public void Delete(@PathVariable(value = "id") Long id) throws UserAccountException.APIError {
+        accountService.deleteUser(id);
     }
 
 }

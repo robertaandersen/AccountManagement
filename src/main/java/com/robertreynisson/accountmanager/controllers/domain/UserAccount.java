@@ -1,10 +1,8 @@
 package com.robertreynisson.accountmanager.controllers.domain;
 
-import com.robertreynisson.accountmanager.data.domain.UserDAO;
+import com.robertreynisson.accountmanager.data.domain.UserAccountDAO;
 
-import java.io.Serializable;
-
-public class User implements Serializable {
+public class UserAccount {
 
     private Long id;
     private String userName;
@@ -14,17 +12,17 @@ public class User implements Serializable {
     private String phone;
     private Role role;
 
-    public User() {
+    public UserAccount() {
     }
 
-    public User(UserDAO userDAO) {
-        this.id = userDAO.getId();
-        this.userName = userDAO.getUserName();
-        this.firstName = userDAO.getFirstName();
-        this.lastName = userDAO.getLastName();
-        this.email = userDAO.getEmail();
-        this.phone = userDAO.getPhone();
-        this.role = Role.valueOf(userDAO.getRole());
+    public UserAccount(UserAccountDAO userAccountDAO) {
+        this.id = userAccountDAO.getId();
+        this.userName = userAccountDAO.getUserName();
+        this.firstName = userAccountDAO.getFirstName();
+        this.lastName = userAccountDAO.getLastName();
+        this.email = userAccountDAO.getEmail();
+        this.phone = userAccountDAO.getPhone();
+        this.role = Role.valueOf(userAccountDAO.getRole());
     }
 
     public Long getId() {
