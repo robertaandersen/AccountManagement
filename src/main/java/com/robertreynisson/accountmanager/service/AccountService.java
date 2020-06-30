@@ -7,9 +7,11 @@ import com.robertreynisson.accountmanager.data.domain.UserAccountDAO;
 import com.robertreynisson.accountmanager.service.domain.AccountUserDetails;
 import com.robertreynisson.accountmanager.service.domain.UserAccountException;
 import com.robertreynisson.accountmanager.service.domain.UserAccountException.NotFound;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,8 @@ public class AccountService implements UserDetailsService {
 
     private final UserAccountRepo userAccountRepo;
 
+    private  BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
     public AccountService(UserAccountRepo userAccountRepo) {
         this.userAccountRepo = userAccountRepo;
     }
@@ -30,6 +34,7 @@ public class AccountService implements UserDetailsService {
         validate(userAccountCreate);
         validateUserDoesNotExist(userAccountCreate);
         try {
+            userAccountCreate.setPassword(bCryptPasswordEncoder.encode(userAccountCreate.getPassword()));
             UserAccountDAO userAccountDAO = new UserAccountDAO(userAccountCreate);
             userAccountRepo.save(userAccountDAO);
 
@@ -75,7 +80,7 @@ public class AccountService implements UserDetailsService {
             userAccountDAO.setFirstName(userAccountAccountCreate.getFirstName());
             userAccountDAO.setLastName(userAccountAccountCreate.getLastName());
             userAccountDAO.setUserName(userAccountAccountCreate.getUserName());
-            userAccountDAO.setPassword(userAccountAccountCreate.getPassword());
+            userAccountDAO.setPassword(bCryptPasswordEncoder.encode(userAccountAccountCreate.getPassword()));
             userAccountDAO.setEmail(userAccountAccountCreate.getEmail());
             userAccountDAO.setPhone(userAccountAccountCreate.getPhone());
             userAccountDAO.setRole(String.valueOf(userAccountAccountCreate.getRole()));

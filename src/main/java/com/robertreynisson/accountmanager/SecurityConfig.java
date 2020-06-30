@@ -17,8 +17,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
+
+    public SecurityConfig(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

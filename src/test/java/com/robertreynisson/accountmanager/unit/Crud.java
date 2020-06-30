@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -24,6 +25,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class Crud {
 
     private UserAccountAccountCreate userAccountCreate;
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public AccountService accountService;
@@ -47,7 +50,6 @@ public class Crud {
         this.userAccountCreate.setPhone("+234234234234");
         this.userAccountCreate.setRole(Role.ADMIN);
         this.userAccountCreate.setPassword("Testing12345");
-
         Mockito.when(userAccountRepo.findById(ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.of(new UserAccountDAO(this.userAccountCreate)));
         Mockito.when(userAccountRepo.save(ArgumentMatchers.any(UserAccountDAO.class))).thenReturn(new UserAccountDAO(this.userAccountCreate));
     }
@@ -63,7 +65,7 @@ public class Crud {
         Assertions.assertEquals("robert@robert.com", captor.getValue().getEmail());
         Assertions.assertEquals("+234234234234", captor.getValue().getPhone());
         Assertions.assertEquals("ADMIN", captor.getValue().getRole());
-        Assertions.assertEquals("Testing12345", captor.getValue().getPassword());
+        Assertions.assertTrue(bCryptPasswordEncoder.matches("Testing12345", captor.getValue().getPassword()));
     }
 
     @Test
@@ -80,7 +82,7 @@ public class Crud {
         Assertions.assertEquals("robert@robert.com", captor.getValue().getEmail());
         Assertions.assertEquals("+234234234234", captor.getValue().getPhone());
         Assertions.assertEquals("ADMIN", captor.getValue().getRole());
-        Assertions.assertEquals("Testing12345", captor.getValue().getPassword());
+        Assertions.assertTrue(bCryptPasswordEncoder.matches("Testing12345", captor.getValue().getPassword()));
     }
 
 }
