@@ -1,4 +1,4 @@
-package com.robertreynisson.accountmanager;
+package com.robertreynisson.accountmanager.config;
 
 import com.robertreynisson.accountmanager.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;

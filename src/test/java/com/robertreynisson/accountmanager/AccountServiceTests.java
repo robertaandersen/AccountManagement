@@ -1,4 +1,4 @@
-package com.robertreynisson.accountmanager.unit;
+package com.robertreynisson.accountmanager;
 
 
 import com.robertreynisson.accountmanager.controllers.domain.Role;
@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class Crud {
+public class AccountServiceTests {
 
     private UserAccountAccountCreate userAccountCreate;
 

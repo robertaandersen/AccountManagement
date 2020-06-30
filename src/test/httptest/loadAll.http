@@ -2,6 +2,9 @@ GET http://{{host}}/account/
 Accept: application/json
 Authorization: Basic {{username}} {{password}}
 
+> {%
+    client.log(response.body)
+%}
 ###
 
 POST http://{{host}}/account/

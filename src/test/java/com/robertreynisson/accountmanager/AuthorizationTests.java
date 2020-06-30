@@ -1,6 +1,5 @@
-package com.robertreynisson.accountmanager.http;
+package com.robertreynisson.accountmanager;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.robertreynisson.accountmanager.controllers.AccountController;
 import com.robertreynisson.accountmanager.controllers.domain.Role;
 import com.robertreynisson.accountmanager.controllers.domain.UserAccountAccountCreate;
@@ -15,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -23,26 +21,18 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-/**
- * Must have a running instance of the service available
- * <p>
- * Tests the basic functionality integration
- * create, then fetch, then update, then delete
- */
 @RunWith(SpringRunner.class)
 @WebMvcTest(AccountController.class)
-public class ControllerCRUDTests {
-
+public class AuthorizationTests {
 
     MockMvc mvc;
     UserAccountAccountCreate userAccountCreate;
 
     @Autowired
-    private WebApplicationContext context;
+    public WebApplicationContext context;
 
     @MockBean
-    public AccountService accountService;
+    private AccountService accountService;
 
     @Before
     public void setup() {
@@ -63,24 +53,31 @@ public class ControllerCRUDTests {
     }
 
     @Test
-    @WithMockUser(username = "test", roles = {"ADMIN"})
-    public void createUser() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writer().writeValueAsString(userAccountCreate);
+    public void assertUnauthenticatedUsersBlocked() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/account/").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
 
-        // Create
-        mvc.perform(MockMvcRequestBuilders.post("/account/")
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andReturn();
+        mvc.perform(MockMvcRequestBuilders.get("/account/").param("id", "1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
 
-        // Fetch all
-        MvcResult r = mvc.perform(MockMvcRequestBuilders.get("/account/")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        r.getResponse().getContentAsString();
 
     }
+
+    @Test
+    @WithMockUser(username = "test", roles = {"XXX"})
+    public void assertAuthorizationBlocks() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/account/").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "test", roles = {"USER"})
+    public void assertUserRoleCanOnlyRead() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/account/").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        mvc.perform(MockMvcRequestBuilders.post("/account/").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
 }
