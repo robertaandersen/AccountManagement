@@ -1,0 +1,18 @@
+GET http://{{host}}/account/
+Accept: application/json
+Authorization: Basic {{username}} {{password}}
+
+###
+
+POST http://{{host}}/account/
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+
+{
+  "username": "robertreynisson",
+  "firstname": "robert",
+  "lastname": "reynisson",
+  "role": "ADMIN"
+}
+
+###
