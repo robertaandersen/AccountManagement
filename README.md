@@ -3,19 +3,30 @@
 This is an example spring boot project. It is a simple API performing typical CRUD operations for a User Account Management system.
 
 ### Usage and Documentation
-When running default properties an in memory DB will be spun up. Any data entered will only persist in memory during the lifespan 
-of the process. 
-Login using the following credentials:
 
+To run either: 
+
+* Build with gradle  
+   ```./gradlew build```   
+   ```java -jar build/libs/AccountManagement-[VERSION].jar```   
+ 
+* Run using docker* [docker image](https://hub.docker.com/r/robertreynisson/accountmanagement) based on the latest commit:  
+```docker run -p 8080:8080 robertreynisson/accountmanagement```  
+  Docker image is created each time there is a new push to this repo, so it might include 'braking changes'
+ 
+  
+API should now be accessible at [```http://localhost:8080```](http://localhost:8080) with a 
+[Swagger-UI interface](http://localhost:8080/api/swagger-ui.html) documenting the API and describing the 
+operations in detail. You are also able to log in using _default user_ and perform operations.
+
+### Default User
+When running the default properties an in memory DB will be spun up, generating a default user:
 ```username: admin```   
 ```password: admintest```
 
-Once up and running a [Swagger-UI interface](http://localhost:8080/api/swagger-ui.html) documents and describes the 
-operations in detail. You are also able to log in using the credentials above and perform operations.   
+The database is functional and will store entered data with memory limitation. Any data entered will only persist in memory during the lifespan of the process. 
 
-###TODO'S
-1. Dockerfile to containerize
-2. travis-ci for CI/CD
+   
 
 ###Libraries and notes
 * ```org.springframework.boot v2.3.1``` 
@@ -28,5 +39,7 @@ operations in detail. You are also able to log in using the credentials above an
  
 IntelliJ's http reqest library was used for creating rudimentary integration tests against a running instance
 The project uses gradle for compilation.
+
+Travis CI takes care of automated build and pushing a docker image to a repo
  
  
