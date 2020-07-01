@@ -7,7 +7,6 @@ import com.robertreynisson.accountmanager.data.domain.UserAccountDAO;
 import com.robertreynisson.accountmanager.service.domain.AccountUserDetails;
 import com.robertreynisson.accountmanager.service.domain.UserAccountException;
 import com.robertreynisson.accountmanager.service.domain.UserAccountException.NotFound;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,7 +23,7 @@ public class AccountService implements UserDetailsService {
 
     private final UserAccountRepo userAccountRepo;
 
-    private  BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public AccountService(UserAccountRepo userAccountRepo) {
         this.userAccountRepo = userAccountRepo;
@@ -56,6 +55,9 @@ public class AccountService implements UserDetailsService {
         try {
             return new UserAccount(loadAccountByIdOrThrow(id));
         } catch (Exception e) {
+            if (e instanceof NotFound) {
+                throw e;
+            }
             throw new UserAccountException.InternalError();
         }
     }

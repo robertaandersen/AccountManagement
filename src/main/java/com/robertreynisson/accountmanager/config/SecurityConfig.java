@@ -1,7 +1,6 @@
 package com.robertreynisson.accountmanager.config;
 
 import com.robertreynisson.accountmanager.service.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,13 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/account/**").access("hasAnyRole('USER, ADMIN')")
                 .antMatchers(HttpMethod.POST, "/account/**").access("hasAnyRole('ADMIN')")
                 .antMatchers(HttpMethod.PUT, "/account/**").access("hasAnyRole('ADMIN')")
                 .antMatchers(HttpMethod.DELETE, "/account/**").access("hasAnyRole('ADMIN')")
+                .antMatchers(HttpMethod.GET, "/account/**").access("hasAnyRole('USER, ADMIN')")
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().httpBasic()
                 .and().csrf().disable();
